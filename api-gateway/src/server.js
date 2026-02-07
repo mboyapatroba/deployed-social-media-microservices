@@ -8,7 +8,7 @@ const { RedisStore } = require("rate-limit-redis");
 const errorHandler = require("./middleware/errorHandler");
 const logger = require("./utils/logger");
 const proxy = require("express-http-proxy");
-const { validateToken } = require("./middleware/authmiddleware");
+const { validateToken } = require("./middleware/authMiddleware");
 
 // // RULE OF THUMB
 // Reading headers: always lowercase (req.headers['content-type'])
