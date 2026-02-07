@@ -12,6 +12,7 @@ services:
     environment:
       - REDIS_URL=redis://redis:6379
       - RABBITMQ_URL=amqp://rabbitmq:5672
+
   identity-service:
     build: ./identity-service
     env_file: ./identity-service/.env
@@ -34,7 +35,7 @@ services:
 
   media-service:
     build: ./media-service
-    env_file: ./media-service.env
+    env_file: ./media-service/.env
     depends_on:
       - redis
       - rabbitmq
@@ -44,7 +45,7 @@ services:
 
   search-service:
     build: ./search-service
-    env_file: ./search/service/.env
+    env_file: ./search-service/.env
     depends_on:
       - redis
       - rabbitmq
@@ -52,19 +53,18 @@ services:
       - REDIS_URL=redis://redis:6379
       - RABBITMQ_URL=amqp://rabbitmq:5672
 
-redis:
-  image: redis:alpine
-  ports:
-    - "6379:6379"
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
 
-rabbitmq:
-  image: rabbitmq:3-management
-  ports:
-    - "5672:5672"
-    - "15672:2672"
-  healthcheck:
-    test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
-    interval: 30s
-    timeout: 10s
-    retries: 5
-
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
