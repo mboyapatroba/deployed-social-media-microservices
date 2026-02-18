@@ -110,6 +110,7 @@ proxyOptionsForPostService = {
     proxyReqOpts.headers["x-user-id"] = srcReq.user.userId; // getting userId from req.user
     return proxyReqOpts;
   },
+  // Intercepts the response coming back from the target service before sending to client.
   userResDecorator: (proxyRes, proxyResData, userReq, userRes) => {
     logger.info(`Response received from Post service: ${proxyRes.statusCode}`);
     return proxyResData;
