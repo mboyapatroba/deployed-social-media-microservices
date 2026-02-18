@@ -91,10 +91,12 @@ app.use(
 
 //--------------------- setting up proxy for our post service---------------------------------------
 proxyOptionsForPostService = {
+  // Rewrites the URL before forwarding the request to the target service.
   proxyReqPathResolver: (req) => {
     // Rewrite /v1/auth/... to /api/auth/... in the Identity Service
     return req.originalUrl.replace(/^\/v1/, "/api");
   },
+  // Handles errors that happen while proxying:
   proxyErrorHandler: (err, res, next) => {
     logger.error(`Proxy error ${err.message}`);
     res.status(500).json({
@@ -102,6 +104,7 @@ proxyOptionsForPostService = {
       error: err.message,
     });
   },
+  // Modifies the outgoing request before sending it to the target service.
   proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
     proxyReqOpts.headers["Content-Type"] = "application/json"; // tells target service we are sending json
     proxyReqOpts.headers["x-user-id"] = srcReq.user.userId; // getting userId from req.user
